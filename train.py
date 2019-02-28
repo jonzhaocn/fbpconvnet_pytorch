@@ -61,6 +61,9 @@ def main(config):
             # data argument
             noisy_batch, orig_batch = data_argument(noisy_batch, orig_batch)
 
+            # Zero the gradients
+            optimizer.zero_grad()
+
             # Forward Propagation
             y_pred = fbp_conv_net(noisy_batch)
 
@@ -76,8 +79,6 @@ def main(config):
             if (i+1) % 100 == 0:
                 print('loss (epoch-%d-iteration-%d) : %f' % (e+1, i+1, loss.item()))
 
-            # Zero the gradients
-            optimizer.zero_grad()
             loss.backward()
 
             # clip gradient
@@ -91,12 +92,13 @@ def main(config):
             param_group['lr'] = learning_rate[min(e+1, len(learning_rate)-1)]
 
         # save check_point
-        if not os.path.exists(config.checkpoint_dir):
-            os.mkdir(config.checkpoint_dir)
-        check_point_path = os.path.join(config.checkpoint_dir, 'epoch-%d.pkl' % (e+1))
-        torch.save({'epoch': e+1, 'state_dict': fbp_conv_net.state_dict(), 'optimizer': optimizer.state_dict()},
-                   check_point_path)
-        print('save checkpoint %s', check_point_path)
+        if (e+1) % config.checkpoint_save_step == 0 or (e+1) == config.epoch:
+            if not os.path.exists(config.checkpoint_dir):
+                os.mkdir(config.checkpoint_dir)
+            check_point_path = os.path.join(config.checkpoint_dir, 'epoch-%d.pkl' % (e+1))
+            torch.save({'epoch': e+1, 'state_dict': fbp_conv_net.state_dict(), 'optimizer': optimizer.state_dict()},
+                       check_point_path)
+            print('save checkpoint %s', check_point_path)
 
 
 if __name__ == '__main__':
@@ -110,6 +112,7 @@ if __name__ == '__main__':
     parser.add_argument('--data_path', type=str, default='./preproc_x20_ellipse_fullfbp.mat')
     parser.add_argument('--sample_step', type=int, default=100)
     parser.add_argument('--sample_dir', type=str, default='./samples/')
+    parser.add_argument('--checkpoint_save_step', type=int, default=10)
     parser.add_argument('--checkpoint_dir', type=str, default='./checkpoints/')
     config = parser.parse_args()
     main(config)

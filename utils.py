@@ -2,6 +2,7 @@ import torch
 import os
 import scipy.io as scipy_io
 import numpy as np
+import re
 
 
 def load_data(data_path, device, mode):
@@ -30,7 +31,8 @@ def load_checkpoint(model, optimizer, checkpoint_dir):
     checkpoint_list = os.listdir(checkpoint_dir)
     if len(checkpoint_list) > 0:
 
-        checkpoint_list.sort()
+        checkpoint_list.sort(key=lambda x: int(re.findall(r"epoch-(\d+).pkl", x)[0]))
+
         last_checkpoint_path = os.path.join(checkpoint_dir, checkpoint_list[-1])
         print('load checkpoint: %s' % last_checkpoint_path)
 

@@ -34,6 +34,10 @@ def eval(config):
 
         y_pred = fbp_conv_net(noisy_batch)
         for j in range(y_pred.shape[0]):
+            image_path = os.path.join(config.eval_result_dir, '%d-noisy.jpg' % (i * config.batch_size + j + 1))
+            torchvision.utils.save_image(noisy_batch[j].squeeze(), image_path)
+            print('save image:', image_path)
+
             image_path = os.path.join(config.eval_result_dir, '%d-pred.jpg' % (i*config.batch_size+j+1))
             torchvision.utils.save_image(y_pred[j].squeeze(), image_path)
             print('save image:', image_path)
