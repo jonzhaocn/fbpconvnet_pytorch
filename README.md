@@ -1,7 +1,9 @@
 # FBPConvNet pytorch
 
 A pytorch implement of FBPConvNet.
-
+## Dataset
+dataset: https://drive.google.com/open?id=0B9fSVcoxJuVwMDlxbXdvcTRaM2M [from [panakino/FBPConvNet](https://github.com/panakino/FBPConvNet) ]
+* note : phantom data set (x20) is only provided.
 ## Examples
 <table>
     <tr>
