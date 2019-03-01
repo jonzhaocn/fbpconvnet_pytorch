@@ -23,6 +23,7 @@ A pytorch implement of FBPConvNet.
             <img src="/readme_image/1-orig.jpg" height="195px" style="max-width:100%;">
         </td>
         <td style="text-align:center;">
+            <p>&nbsp</p>
             <img src="/readme_image/1-pred.jpg" height="195px" style="max-width:100%;">
             <p align="center">SNR:22.063571</p>
         </td>
@@ -35,6 +36,7 @@ A pytorch implement of FBPConvNet.
             <img src="/readme_image/2-orig.jpg" height="195px" style="max-width:100%;">
         </td>
         <td style="text-align:center">
+            <p>&nbsp</p>
             <img src="/readme_image/2-pred.jpg" height="195px" style="max-width:100%;">
             <p align="center">SNR:22.175497</p>
         </td>
@@ -47,6 +49,7 @@ A pytorch implement of FBPConvNet.
             <img src="/readme_image/3-orig.jpg" height="195px" style="max-width:100%;">
         </td>
         <td style="text-align:center">
+            <p>&nbsp</p>
             <img src="/readme_image/3-pred.jpg" height="195px" style="max-width:100%;">
             <p align="center">SNR:24.397142</p>
         </td>
@@ -59,6 +62,7 @@ A pytorch implement of FBPConvNet.
             <img src="/readme_image/4-orig.jpg" height="195px" style="max-width:100%;">
         </td>
         <td style="text-align:center">
+            <p>&nbsp</p>
             <img src="/readme_image/4-pred.jpg" height="195px" style="max-width:100%;">
             <p align="center">SNR:25.136485</p>
         </td>
