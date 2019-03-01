@@ -3,8 +3,7 @@
 A pytorch implement of FBPConvNet.
 
 ## Examples
-
-<table border="1" cellspacing="0" cellpadding="0" style="text-align:center;">
+<table>
     <tr>
         <th style="text-align:center;">
             <p>Noisy</p>
@@ -17,15 +16,15 @@ A pytorch implement of FBPConvNet.
         </th>
     </tr>
     <tr>
-        <td style="text-align:center">
+        <td style="text-align:center;">
             <img src="/readme_image/1-noisy.jpg" height="195px" style="max-width:100%;">
         </td>
-        <td style="text-align:center">
+        <td style="text-align:center;">
             <img src="/readme_image/1-orig.jpg" height="195px" style="max-width:100%;">
         </td>
-        <td style="text-align:center">
+        <td style="text-align:center;">
             <img src="/readme_image/1-pred.jpg" height="195px" style="max-width:100%;">
-            SNR:22.063571
+            <p align="center">SNR:22.063571</p>
         </td>
     </tr>
     <tr>
@@ -37,7 +36,7 @@ A pytorch implement of FBPConvNet.
         </td>
         <td style="text-align:center">
             <img src="/readme_image/2-pred.jpg" height="195px" style="max-width:100%;">
-            SNR:22.175497
+            <p align="center">SNR:22.175497</p>
         </td>
     </tr>
     <tr>
@@ -49,7 +48,7 @@ A pytorch implement of FBPConvNet.
         </td>
         <td style="text-align:center">
             <img src="/readme_image/3-pred.jpg" height="195px" style="max-width:100%;">
-            SNR:24.397142
+            <p align="center">SNR:24.397142</p>
         </td>
     </tr>
     <tr>
@@ -61,7 +60,7 @@ A pytorch implement of FBPConvNet.
         </td>
         <td style="text-align:center">
             <img src="/readme_image/4-pred.jpg" height="195px" style="max-width:100%;">
-            SNR:25.136485
+            <p align="center">SNR:25.136485</p>
         </td>
     </tr>
 </table>
