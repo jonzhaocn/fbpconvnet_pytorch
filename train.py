@@ -41,12 +41,15 @@ def main(config):
 
     fbp_conv_net = FBPCONVNet().to(device)
     criterion = torch.nn.MSELoss()
-    optimizer = torch.optim.SGD(fbp_conv_net.parameters(), lr=learning_rate[0], momentum=config.momentum)
+    optimizer = torch.optim.SGD(fbp_conv_net.parameters(), lr=learning_rate[0], momentum=config.momentum,
+                                weight_decay=1e-8)
     epoch_start = 0
 
     # load check_point
     if os.path.exists(config.checkpoint_dir) and len(os.listdir(config.checkpoint_dir)) > 0:
         fbp_conv_net, optimizer, epoch_start = load_checkpoint(fbp_conv_net, optimizer, config.checkpoint_dir)
+
+    fbp_conv_net.train()
 
     print('start training...')
     for e in range(epoch_start, epoch):
@@ -55,8 +58,9 @@ def main(config):
         for i in range(math.ceil(noisy.shape[0]/batch_size)):
             i_start = i
             i_end = min(i_start+batch_size, noisy.shape[0])
-            noisy_batch = noisy[i_start:i_end]
-            orig_batch = orig[i_start:i_end]
+
+            noisy_batch = noisy[i_start:i_end].clone()
+            orig_batch = orig[i_start:i_end].clone()
 
             # data argument
             noisy_batch, orig_batch = data_argument(noisy_batch, orig_batch)
@@ -87,6 +91,11 @@ def main(config):
             # Update the parameters
             optimizer.step()
 
+        # shuffle data
+        ind = np.random.permutation(noisy.shape[0])
+        noisy = noisy[ind]
+        orig = orig[ind]
+
         # adjust learning rate
         for param_group in optimizer.param_groups:
             param_group['lr'] = learning_rate[min(e+1, len(learning_rate)-1)]
@@ -102,10 +111,9 @@ def main(config):
 
 
 if __name__ == '__main__':
-    epoch = 151
     parser = argparse.ArgumentParser()
-    parser.add_argument('--epoch', type=int, default=epoch)
-    parser.add_argument('--learning_rate', type=tuple, default=np.logspace(-2, -3, epoch))
+    parser.add_argument('--epoch', type=int, default=151)
+    parser.add_argument('--learning_rate', type=tuple, default=np.logspace(-2, -3, 20))
     parser.add_argument('--grad_max', type=float, default=0.01)
     parser.add_argument('--batch_size', type=int, default=1)
     parser.add_argument('--momentum', type=float, default=0.99)
@@ -115,4 +123,5 @@ if __name__ == '__main__':
     parser.add_argument('--checkpoint_save_step', type=int, default=10)
     parser.add_argument('--checkpoint_dir', type=str, default='./checkpoints/')
     config = parser.parse_args()
+    print(config)
     main(config)

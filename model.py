@@ -117,17 +117,28 @@ class FBPCONVNet(nn.Module):
                                              padding=padding, batchOn=True, ReluOn=True))
         block_1_2.extend(self.add_block_conv(in_channels=64, out_channels=64, kernel_size=kernel_size, stride=1,
                                              padding=padding, batchOn=True, ReluOn=True))
-        block_1_2.extend(self.add_block_conv(in_channels=64, out_channels=1, kernel_size=kernel_size, stride=1,
-                                             padding=padding, batchOn=True, ReluOn=True))
+        block_1_2.extend(self.add_block_conv(in_channels=64, out_channels=1, kernel_size=1, stride=1,
+                                             padding=0, batchOn=False, ReluOn=False))
         self.block_1_2 = nn.Sequential(*block_1_2)
 
     @staticmethod
     def add_block_conv(in_channels, out_channels, kernel_size, stride, padding, batchOn, ReluOn):
         seq = []
-        seq.append(nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
-                             stride=stride, padding=padding))
+        # conv layer
+        conv = nn.Conv2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
+                         stride=stride, padding=padding)
+        nn.init.normal_(conv.weight, 0, 0.01)
+        nn.init.constant_(conv.bias, 0)
+        seq.append(conv)
+
+        # batch norm layer
         if batchOn:
-            seq.append(nn.BatchNorm2d(num_features=out_channels))
+            batch_norm = nn.BatchNorm2d(num_features=out_channels)
+            nn.init.constant_(batch_norm.weight, 1)
+            nn.init.constant_(batch_norm.bias, 0)
+            seq.append(batch_norm)
+
+        # relu layer
         if ReluOn:
             seq.append(nn.ReLU())
         return seq
@@ -135,10 +146,19 @@ class FBPCONVNet(nn.Module):
     @staticmethod
     def add_block_conv_transpose(in_channels, out_channels, kernel_size, stride, padding, output_padding, batchOn, ReluOn):
         seq = []
-        seq.append(nn.ConvTranspose2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
-                                      stride=stride, padding=padding, output_padding=output_padding))
+
+        convt = nn.ConvTranspose2d(in_channels=in_channels, out_channels=out_channels, kernel_size=kernel_size,
+                                   stride=stride, padding=padding, output_padding=output_padding)
+        nn.init.normal_(convt.weight, 0, 0.01)
+        nn.init.constant_(convt.bias, 0)
+        seq.append(convt)
+
         if batchOn:
-            seq.append(nn.BatchNorm2d(num_features=out_channels))
+            batch_norm = nn.BatchNorm2d(num_features=out_channels)
+            nn.init.constant_(batch_norm.weight, 1)
+            nn.init.constant_(batch_norm.bias, 0)
+            seq.append(batch_norm)
+
         if ReluOn:
             seq.append(nn.ReLU())
         return seq

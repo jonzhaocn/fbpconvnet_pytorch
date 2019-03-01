@@ -19,6 +19,7 @@ def eval(config):
         return
 
     fbp_conv_net, _, _ = load_checkpoint(fbp_conv_net, optimizer=None, checkpoint_dir=config.checkpoint_dir)
+    fbp_conv_net.eval()
 
     print('load testing data')
     noisy, orig = load_data(config.data_path, device, mode='eval')
