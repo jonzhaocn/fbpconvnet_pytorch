@@ -3,9 +3,8 @@ import torch
 import numpy as np
 import math
 import argparse
-import torchvision
 import os
-from utils import load_data, load_checkpoint
+from utils import load_data, load_checkpoint, cmap_convert
 
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = "1"
@@ -71,12 +70,14 @@ def main(config):
             # Forward Propagation
             y_pred = fbp_conv_net(noisy_batch)
 
+            # save sample images
             if (i+1) % config.sample_step == 0:
                 if not os.path.exists(config.sample_dir):
                     os.mkdir(config.sample_dir)
-                image_path = os.path.join(config.sample_dir, 'epoch-%d-iteration-%d.jpg' % (e + 1, i + 1))
-                torchvision.utils.save_image(y_pred.squeeze(), image_path)
-                print('save image:', image_path)
+                sample_img_path = os.path.join(config.sample_dir, 'epoch-%d-iteration-%d.jpg' % (e + 1, i + 1))
+                sample_img = cmap_convert(y_pred[0].squeeze())
+                sample_img.save(sample_img_path)
+                print('save image:', sample_img_path)
 
             # Compute and print loss
             loss = criterion(y_pred, orig_batch)
