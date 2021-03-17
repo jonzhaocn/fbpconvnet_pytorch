@@ -50,6 +50,7 @@ def load_checkpoint(model, optimizer, checkpoint_dir):
 
 def cmap_convert(image_tensor):
     image = image_tensor.detach().cpu().clone().numpy().squeeze()
+    # subtract the minimum and divide by the maximum, is it reasonable for medical image processing
     image = image - image.min()
     image = image / image.max()
     cmap_viridis = plt.get_cmap('viridis')
